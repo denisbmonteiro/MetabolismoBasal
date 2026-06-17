@@ -25,9 +25,15 @@
         </div>
 
         <div class="form">
-            <input id="idade" type="number" placeholder="Idade"/>
+            <input id="idade" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="Idade" />
             <input id="peso" type="number" placeholder="Peso (kg)"/>
             <input id="altura" type="number" placeholder="Altura (cm)"/>
+        </div>
+
+        <div class="error">
+            <h3>
+                <label id="lblError"></label>
+            </h3>
         </div>
 
         <div class="buttons">

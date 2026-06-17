@@ -71,6 +71,11 @@ section h2 {
     text-align: center;
 }
 
+.error {
+    display: none;
+    color: #EF4444;
+}
+
 .btn {
     margin-top: 20px;
     padding: 10px 20px;
@@ -81,12 +86,12 @@ section h2 {
     cursor: pointer;
 }
 
-.btn-calcular{
+.btn-calcular {
     background-color: #6272A4;
     color: #F8F8F2;
 }
 
-.btn-limpar{
+.btn-limpar {
     background-color: #F8F8F2;
     color: #6272A4;
     margin-right: 5px;

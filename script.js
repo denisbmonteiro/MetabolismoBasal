@@ -1,28 +1,28 @@
 function Calcular() {
+    ClearError();
+
     var masculino = document.getElementById('masculino').checked;
-    var feminino = document.getElementById('feminino').checked;
-    var idade = document.getElementById('idade').value;
-    var peso = document.getElementById('peso').value;
-    var altura = document.getElementById('altura').value;
+    var idadeStr = document.getElementById('idade').value.trim();
+    var pesoStr = document.getElementById('peso').value.trim();
+    var alturaStr = document.getElementById('altura').value.trim();
     var resultado;
 
-    if (!masculino && !feminino) {
-        alert("Selecione o seu sexo!");
+    if (idadeStr === '') {
+        ShowError("Insira a sua idade!");
         return;
     }
 
-    if (idade === 0 || idade === '') {
-        alert("Insira a sua idade!");
+    var idade = Number(idadeStr);
+    var peso = Number(pesoStr);
+    var altura = Number(alturaStr);
+
+    if (!Number.isFinite(peso) || peso <= 0) {
+        ShowError("Insira o seu peso!");
         return;
     }
 
-    if (peso === 0 || peso === '') {
-        alert("Insira o seu peso!");
-        return;
-    }
-
-    if (altura === 0 || altura === '') {
-        alert("Insira a sua altura!");
+    if (!Number.isFinite(altura) || altura <= 0) {
+        ShowError("Insira a sua altura!");
         return;
     }
 
@@ -43,4 +43,40 @@ function Limpar() {
     document.getElementById('altura').value = '';
     document.getElementById('lblResultado').innerText = 0;
     document.querySelector('.resultado').classList.remove("active");
+
+    ClearError();
 }
+
+function ShowError(message) {
+    document.getElementById('lblError').innerHTML = message;
+    document.querySelector('.error').classList.add("active");
+}
+
+function ClearError() {
+    document.getElementById('lblError').innerText = "";
+    document.querySelector('.error').classList.remove("active");
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var idadeEl = document.getElementById('idade');
+    if (!idadeEl) return;
+
+    idadeEl.addEventListener('input', function (e) {
+        var v = e.target.value.replace(/\D/g, '').slice(0, 3);
+        if (v !== e.target.value) e.target.value = v;
+
+        ClearError();
+    });
+
+    idadeEl.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var paste = (e.clipboardData || window.clipboardData).getData('text') || '';
+        var filtered = paste.replace(/\D/g, '').slice(0, 3);
+        var el = e.target;
+        var start = el.selectionStart || 0;
+        var end = el.selectionEnd || 0;
+        var newVal = (el.value.slice(0, start) + filtered + el.value.slice(end)).slice(0, 3);
+        el.value = newVal;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+});
