@@ -59,24 +59,57 @@ function ClearError() {
 
 document.addEventListener('DOMContentLoaded', function () {
     var idadeEl = document.getElementById('idade');
-    if (!idadeEl) return;
 
-    idadeEl.addEventListener('input', function (e) {
-        var v = e.target.value.replace(/\D/g, '').slice(0, 3);
-        if (v !== e.target.value) e.target.value = v;
+    if (idadeEl) {
+        idadeEl.addEventListener('input', function (e) {
+            var v = e.target.value.replace(/\D/g, '').slice(0, 3);
+            if (v !== e.target.value) e.target.value = v;
 
-        ClearError();
-    });
+            ClearError();
+        });
 
-    idadeEl.addEventListener('paste', function (e) {
-        e.preventDefault();
-        var paste = (e.clipboardData || window.clipboardData).getData('text') || '';
-        var filtered = paste.replace(/\D/g, '').slice(0, 3);
-        var el = e.target;
-        var start = el.selectionStart || 0;
-        var end = el.selectionEnd || 0;
-        var newVal = (el.value.slice(0, start) + filtered + el.value.slice(end)).slice(0, 3);
-        el.value = newVal;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-    });
+        idadeEl.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var paste = (e.clipboardData || window.clipboardData).getData('text') || '';
+            var filtered = paste.replace(/\D/g, '').slice(0, 3);
+            var el = e.target;
+            var start = el.selectionStart || 0;
+            var end = el.selectionEnd || 0;
+            var newVal = (el.value.slice(0, start) + filtered + el.value.slice(end)).slice(0, 3);
+            el.value = newVal;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    }
+
+    var pesoEl = document.getElementById('peso');
+
+    if (pesoEl) {
+        pesoEl.addEventListener('input', function (e) {
+            var v = e.target.value.replace(/\D/g, '').slice(0, 5);
+            if (v.length > 2) {
+                var intPart = v.slice(0, v.length - 2);
+                var decPart = v.slice(v.length - 2);
+                e.target.value = intPart + '.' + decPart;
+            } else {
+                e.target.value = v;
+            }
+
+            ClearError();
+        });
+
+        pesoEl.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var paste = (e.clipboardData || window.clipboardData).getData('text') || '';
+            var v = paste.replace(/\D/g, '').slice(0, 5);
+            if (v.length > 2) {
+                var intPart = v.slice(0, v.length - 2);
+                var decPart = v.slice(v.length - 2);
+                pesoEl.value = intPart + '.' + decPart;
+            } else {
+                pesoEl.value = v;
+            }
+
+            pesoEl.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    }
 });
