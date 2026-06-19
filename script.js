@@ -7,14 +7,14 @@ function Calcular() {
     var alturaStr = document.getElementById('altura').value.trim();
     var resultado;
 
-    if (idadeStr === '') {
-        ShowError("Insira a sua idade!");
-        return;
-    }
-
     var idade = Number(idadeStr);
     var peso = Number(pesoStr);
     var altura = Number(alturaStr);
+
+    if (!Number.isFinite(idade) || idade <= 0) {
+        ShowError("Insira a sua idade!");
+        return;
+    }
 
     if (!Number.isFinite(peso) || peso <= 0) {
         ShowError("Insira o seu peso!");
@@ -110,6 +110,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             pesoEl.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    }
+
+    var alturaEl = document.getElementById('altura');
+
+    if (alturaEl) {
+        alturaEl.addEventListener('input', function (e) {
+            var v = e.target.value.replace(/\D/g, '').slice(0, 3);
+            if (v !== e.target.value) e.target.value = v;
+
+            ClearError();
+        });
+
+        alturaEl.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var paste = (e.clipboardData || window.clipboardData).getData('text') || '';
+            var filtered = paste.replace(/\D/g, '').slice(0, 3);
+            var el = e.target;
+            var start = el.selectionStart || 0;
+            var end = el.selectionEnd || 0;
+            var newVal = (el.value.slice(0, start) + filtered + el.value.slice(end)).slice(0, 3);
+            el.value = newVal;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
         });
     }
 });
